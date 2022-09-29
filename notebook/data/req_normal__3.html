@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Stock Screener - Custom </title>
+<meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge">
+                         <meta name="viewport" content="width=1024"><meta name="description" content="Stock screener for investors and traders, financial visualizations.">
+<meta name="keywords" content="Stock Screener, Charts, Quotes, Maps, News, Financial Visualizations, Research, Trading Systems">
+<meta name="robots" content="noindex">
+
+            <link rel="preload" href="/fonts/lato-v17-latin-ext_latin-regular.woff2" as="font" crossorigin>
+            <link rel="preload" href="/fonts/lato-v17-latin-ext_latin-700.woff2" as="font" crossorigin>
+            <link rel="preload" href="/fonts/lato-v17-latin-ext_latin-900.woff2" as="font" crossorigin>
+            <link rel="preload" href="/fonts/inter-latin.woff2" as="font" crossorigin>
+        
+            <script>
+                window.notificationsArray = [];
+                window.renderScriptNotLoaded = function () {};
+                window.handleScriptNotLoaded = function (element) {
+                    window.notificationsArray.push(element);
+                    window.sentryDisabled = true;
+                    window.handleScriptNotLoaded = function () {};
+                    if(typeof window.Sentry === 'object' && window.Sentry.hasOwnProperty('captureMessage')){
+                        window.Sentry.captureMessage("Script load ERROR.", {src: element.src});
+                    };
+                };
+            </script>
+        <link rel="stylesheet" href="/assets/dist/finviz.72a7b94d.css" type="text/css" onerror="window.handleScriptNotLoaded(this)">
+<link rel="stylesheet" href="/assets/dist/main.ec8205cb.css" type="text/css" onerror="window.handleScriptNotLoaded(this)">
+<link rel="icon" type="image/png" href="/favicon_2x.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicon.png" sizes="16x16">
+
+          <!-- Quantcast Choice. Consent Manager Tag v2.0 (for TCF 2.0) -->
+          <script type="text/javascript" async=true>
+          (function() {
+            var host = 'finviz.com';
+            var element = document.createElement('script');
+            var firstScript = document.getElementsByTagName('script')[0];
+            var url = 'https://cmp.quantcast.com'
+              .concat('/choice/', 'c2W8esUZ6Q8oA', '/', host, '/choice.js?tag_version=V2');
+            var uspTries = 0;
+            var uspTriesLimit = 3;
+            element.async = true;
+            element.type = 'text/javascript';
+            element.src = url;
+
+            firstScript.parentNode.insertBefore(element, firstScript);
+
+            function makeStub() {
+              var TCF_LOCATOR_NAME = '__tcfapiLocator';
+              var queue = [];
+              var win = window;
+              var cmpFrame;
+
+              function addFrame() {
+                var doc = win.document;
+                var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);
+
+                if (!otherCMP) {
+                  if (doc.body) {
+                    var iframe = doc.createElement('iframe');
+
+                    iframe.style.cssText = 'display:none';
+                    iframe.name = TCF_LOCATOR_NAME;
+                    doc.body.appendChild(iframe);
+                  } else {
+                    setTimeout(addFrame, 5);
+                  }
+                }
+                return !otherCMP;
+              }
+
+              function tcfAPIHandler() {
+                var gdprApplies;
+                var args = arguments;
+
+                if (!args.length) {
+                  return queue;
+                } else if (args[0] === 'setGdprApplies') {
+                  if (
+                    args.length > 3 &&
+                    args[2] === 2 &&
+                    typeof args[3] === 'boolean'
+                  ) {
+                    gdprApplies = args[3];
+                    if (typeof args[2] === 'function') {
+                      args[2]('set', true);
+                    }
+                  }
+                } else if (args[0] === 'ping') {
+                  var retr = {
+                    gdprApplies: gdprApplies,
+                    cmpLoaded: false,
+                    cmpStatus: 'stub'
+                  };
+
+                  if (typeof args[2] === 'function') {
+                    args[2](retr);
+                  }
+                } else {
+                  if(args[0] === 'init' && typeof args[3] === 'object') {
+                    args[3] = Object.assign(args[3], { tag_version: 'V2' });
+                  }
+                  queue.push(args);
+                }
+              }
+
+              function postMessageEventHandler(event) {
+                var msgIsString = typeof event.data === 'string';
+                var json = {};
+
+                try {
+                  if (msgIsString) {
+                    json = JSON.parse(event.data);
+                  } else {
+                    json = event.data;
+                  }
+                } catch (ignore) {}
+
+                var payload = json.__tcfapiCall;
+
+                if (payload) {
+                  window.__tcfapi(
+                    payload.command,
+                    payload.version,
+                    function(retValue, success) {
+                      var returnMsg = {
+                        __tcfapiReturn: {
+                          returnValue: retValue,
+                          success: success,
+                          callId: payload.callId
+                        }
+                      };
+                      if (msgIsString) {
+                        returnMsg = JSON.stringify(returnMsg);
+                      }
+                      if (event && event.source && event.source.postMessage) {
+                        event.source.postMessage(returnMsg, '*');
+                      }
+                    },
+                    payload.parameter
+                  );
+                }
+              }
+
+              while (win) {
+                try {
+                  if (win.frames[TCF_LOCATOR_NAME]) {
+                    cmpFrame = win;
+                    break;
+                  }
+                } catch (ignore) {}
+
+                if (win === window.top) {
+                  break;
+                }
+                win = win.parent;
+              }
+              if (!cmpFrame) {
+                addFrame();
+                win.__tcfapi = tcfAPIHandler;
+                win.addEventListener('message', postMessageEventHandler, false);
+              }
+            };
+
+            makeStub();
+
+            var uspStubFunction = function() {
+              var arg = arguments;
+              if (typeof window.__uspapi !== uspStubFunction) {
+                setTimeout(function() {
+                  if (typeof window.__uspapi !== 'undefined') {
+                    window.__uspapi.apply(window.__uspapi, arg);
+                  }
+                }, 500);
+              }
+            };
+
+            var checkIfUspIsReady = function() {
+              uspTries++;
+              if (window.__uspapi === uspStubFunction && uspTries < uspTriesLimit) {
+                console.warn('USP is not accessible');
+              } else {
+                clearInterval(uspInterval);
+              }
+            };
+
+            if (typeof window.__uspapi === 'undefined') {
+              window.__uspapi = uspStubFunction;
+              var uspInterval = setInterval(checkIfUspIsReady, 6000);
+            }
+          })();
+          </script>
+          <!-- End Quantcast Choice. Consent Manager Tag v2.0 (for TCF 2.0) -->
+        <script>
+            FinvizSettings = {
+                hasUserPremium: false,
+                name: "",
+                chartsDomain: "https://charts2.finviz.com",
+                nodeChartsDomain: "https://charts2-node.finviz.com",
+                hasUserPersistentDrawings: false,
+                hasUserNodeCharts: true,
+                hasUserNewHrCharts: false,
+                hasUserAlertNotifications: false,
+                hasUserNew10minCharts: false,
+                hasUserRetinaHoverCharts: false,
+                hasUserStickyHeader: true,
+                adsProvider: 1,
+            };
+        </script><script src="/script/browser_check.js?rev=317"></script><script src="/script/vendor/boxover.js?rev=317"></script>
+<script src="/assets/dist/runtime.8f281a63.js" onerror="window.handleScriptNotLoaded(this)"></script><script src="/assets/dist/322.646c6885.js" onerror="window.handleScriptNotLoaded(this)"></script><script src="/assets/dist/42.4e765c7c.js" onerror="window.handleScriptNotLoaded(this)"></script><script src="/assets/dist/libs_init.b409d6ec.js" onerror="window.handleScriptNotLoaded(this)"></script><script src="/assets/dist/729.9f99bec3.js" onerror="window.handleScriptNotLoaded(this)"></script><script src="/assets/dist/header.84149f67.js" onerror="window.handleScriptNotLoaded(this)"></script><script type="text/javascript">
+            var portfolioRowsLimit=50;
+            function ScreenerSelectOnChange() {}
+        </script><script src="script/screener.js?rev=317" type="text/javascript" onerror="window.handleScriptNotLoaded(this)"></script>
+<script src="script/screener_free.js?rev=317" type="text/javascript" onerror="window.handleScriptNotLoaded(this)"></script>
+            <script src="/script/pubfig.min.js"></script>
+            <script>
+                if(window['FinvizLoadTagCode']) {
+                    var s = document.createElement('script');
+                    s.type = 'text/javascript';
+                    s.async = true;
+                    s.src = 'https://u5.investingchannel.com/static/uat.js';
+                    document.head.appendChild(s);
+
+                    InvestingChannelQueue = window.InvestingChannelQueue || [];
+                    var ic_page;
+                    function _destroyICPage() {
+                        InvestingChannelQueue.push(function() {
+                            if (ic_page && ic_page.__fv_destroyed !== true) {
+                                ic_page.destroy();
+                                ic_page.__fv_destroyed = true
+                            }
+                        });
+                    }
+
+                    function _createICPage() {
+                        InvestingChannelQueue.push(function() {
+                            ic_page = InvestingChannel.UAT.Run('df0d0d52-cc7f-11e8-82a5-0abbb61c4a6a');
+                            ic_page.__fv_destroyed = false
+                        });
+                    }
+
+                    _createICPage();
+
+                    var hash = null;
+                    if (typeof hash === 'string') {
+                      InvestingChannelQueue.push(function() {
+                          ic_page.setUserId('email', hash, true);
+                      });
+                    }
+                } else {
+                    (function() {
+                function ready(fn) {if (document.readyState != 'loading'){fn();}else{document.addEventListener('DOMContentLoaded', fn);} }
+                ready(function() {
+                    var banners = ['2', '4', '5', '6', '7'];
+                    var banner = banners[Math.floor(Math.random() * banners.length)];
+
+                    if (banner === '3') {
+                        document.getElementById('banner_position').innerHTML = '<iframe src="/img/a/' + banner + '/index.html?rev=2" frameBorder="0" width="728" height="90"></iframe>';
+                    } else {
+                        document.getElementById('banner_position').innerHTML = '<a href="/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=' + banner + '"><img src="/img/a/' + banner + '.jpg"></a>';
+                    }
+                    window.gtag && window.gtag('event', 'impression', { event_category: 'banner', event_label: banner, non_interaction: true });
+                })
+            })();
+                }
+            </script></head>
+<body class="m-0 yellow-tooltip is-screener">
+          <script>
+            function checkMediaQuery(matches) {
+              if (matches) {
+                FinvizSettings.hasUserStickyHeader = true;
+                document.body.classList.add('is-header-sticky');
+              } else {
+                FinvizSettings.hasUserStickyHeader = false;
+                document.body.classList.remove('is-header-sticky');
+              }
+            }
+            var mediaMatch = window.matchMedia('(min-width: 1025px) and (min-height: 650px)');
+            checkMediaQuery(mediaMatch.matches);
+            mediaMatch.addListener(function (ev) { checkMediaQuery(ev.matches) });
+          </script>
+          <div id="notifications-container"></div>
+                <table class="header">
+                    <tr class="align-top">
+                        <td>
+                            <table class="header-container">
+                                <tr>
+                                    <td class="w-[30%]">
+                                        <table class="w-full">
+                                            <tr>
+                                                <td class="h-[50px] align-middle">
+                                                    <a href="/" class="logo"></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="search" id="search" style="padding-top: 4px">
+                                                    <form style="margin: 0">
+                                                        <input placeholder="Search ticker, company or profile" type="text" value="">
+                                                        <span class="fa fa-search"></span>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td class="align-bottom pb-1">
+                                        <div id="microbar_position" class="hidden xl:flex items-center h-[37px] pl-2"><div><div id="IC_D_88x31_1"class="relative overflow-hidden flex items-center justify-center w-full mx-auto" style="width:88px;height:31px;max-height:31px"></div></div></div>
+                                    </td>
+                                    <td class="relative w-[730px] text-right">
+                                        <div id="banner_position" class="overflow-hidden absolute top-0 right-0 w-full h-24"><div id="IC_D_728x90_1"class="relative overflow-hidden flex items-center justify-center w-full mx-auto" style="width:728px;height:90px;max-height:90px"></div></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w-[1000px]" style="font-size:0">
+                            <img src="/gfx/nic2x2.gif" class="w-[1000px] h-px" alt="">
+                        </td>
+                    </tr>
+                </table>
+            <table class="navbar">
+                <tr>
+                    <td class="h-[30px]">
+                        <table class="header-container">
+                            <tr><td><a class="nav-link  is-first" href="/">Home</a></td><td><a class="nav-link " href="/news.ashx">News</a></td><td><a class="nav-link is-active" href="/screener.ashx">Screener</a></td><td><a class="nav-link " href="/map.ashx">Maps</a></td><td><a class="nav-link " href="/groups.ashx">Groups</a></td><td><a class="nav-link " href="/portfolio.ashx">Portfolio</a></td><td><a class="nav-link " href="/insidertrading.ashx">Insider</a></td><td><a class="nav-link " href="/futures.ashx">Futures</a></td><td><a class="nav-link " href="/forex.ashx">Forex</a></td><td><a class="nav-link " href="/crypto.ashx">Crypto</a></td><td><a class="nav-link " href="/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=main-navbar-backtests">Backtests</a></td><td><a class="nav-link  is-elite" href="/elite.ashx">Elite</a></td><td class="w-full"><div id="time"></div></td>
+                <td>
+                    <a href="/help/screener.ashx" class="nav-link is-help">
+                        <span class="fa fa-question-circle"></span>
+                        Help
+                    </a>
+                </td>
+                <td><a href="/login.ashx" class="nav-link sign-in">Login</a></td>
+                <td><a href="/register.ashx" class="nav-link sign-up">Register</a></td>
+            
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        <div class="content "><table cellpadding="0" class="fv-container"><tr>
+<td>
+<div id="screener-react"></div>
+<table id="filter-table-top" width="100%" cellpadding="0" cellspacing="0" border="0" background="gfx/top_menu_screener_shadow.gif">
+<tr><td><img src="gfx/nic2x2.gif" style="width:2px;height:20px" alt="" border="0"></td></tr>
+<tr>
+<td width="1%"></td>
+<td align="center" width="15%">
+<select id="screenerPresetsSelect" style="width:100%;" class="body-combo-text" onchange='ScreenerPresetsChange(value,"v=152&ft=4&r=41")'>
+<option>My Presets</option>
+<option value="__save_screen">-Save Screen</option>
+<option value="__edit_screens">-Edit Screens</option>
+</select>
+</td>
+<td align="center" width="6%">
+<span class="body-combo-title" style="cursor:pointer;" data-boxover="cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Order] body=[<table width=300><tr><td class='tooltip_tab'>Select the criteria by which the output information will be sorted. The order settings apply to all views. Use the <b>ascending</b> and <b>descending</b> option to invert the current order.<br><br> TIP: In table views you can click on top of a column to sort the table by the underlying values.</td></tr></table>] delay=[500]">Order:</span></td>
+<td align="left" width="20%">
+<select id="orderSelect" style="width:100%;" class="body-combo-text" onchange='window.location=document.getElementById("orderSelect").value'>
+<option value="screener.ashx?v=152&ft=4&o=ticker">Ticker</option><option value="screener.ashx?v=152&ft=4&o=company">Company</option><option value="screener.ashx?v=152&ft=4&o=sector">Sector</option><option value="screener.ashx?v=152&ft=4&o=industry">Industry</option><option value="screener.ashx?v=152&ft=4&o=country">Country</option><option value="screener.ashx?v=152&ft=4&o=marketcap">Market Cap.</option><option value="screener.ashx?v=152&ft=4&o=pe">Price/Earnings</option><option value="screener.ashx?v=152&ft=4&o=forwardpe">Forward Price/Earnings</option><option value="screener.ashx?v=152&ft=4&o=peg">PEG (Price/Earnings/Growth)</option><option value="screener.ashx?v=152&ft=4&o=ps">Price/Sales</option><option value="screener.ashx?v=152&ft=4&o=pb">Price/Book</option><option value="screener.ashx?v=152&ft=4&o=pc">Price/Cash</option><option value="screener.ashx?v=152&ft=4&o=pfcf">Price/Free Cash Flow</option><option value="screener.ashx?v=152&ft=4&o=dividendyield">Dividend Yield</option><option value="screener.ashx?v=152&ft=4&o=payoutratio">Payout Ratio</option><option value="screener.ashx?v=152&ft=4&o=eps">EPS (ttm)</option><option value="screener.ashx?v=152&ft=4&o=epsyoy">EPS growth this year</option><option value="screener.ashx?v=152&ft=4&o=epsyoy1">EPS growth next year</option><option value="screener.ashx?v=152&ft=4&o=eps5years">EPS growth past 5 years</option><option value="screener.ashx?v=152&ft=4&o=estltgrowth">EPS growth next 5 years</option><option value="screener.ashx?v=152&ft=4&o=sales5years">Sales growth past 5 years</option><option value="screener.ashx?v=152&ft=4&o=epsqoq">EPS growth qtr over qtr</option><option value="screener.ashx?v=152&ft=4&o=salesqoq">Sales growth qtr over qtr</option><option value="screener.ashx?v=152&ft=4&o=sharesoutstanding2">Shares Outstanding</option><option value="screener.ashx?v=152&ft=4&o=sharesfloat">Shares Float</option><option value="screener.ashx?v=152&ft=4&o=insiderown">Insider Ownership</option><option value="screener.ashx?v=152&ft=4&o=insidertrans">Insider Transactions</option><option value="screener.ashx?v=152&ft=4&o=instown">Institutional Ownership</option><option value="screener.ashx?v=152&ft=4&o=insttrans">Institutional Transactions</option><option value="screener.ashx?v=152&ft=4&o=shortinterestshare">Short Interest Share</option><option value="screener.ashx?v=152&ft=4&o=shortinterestratio">Short Interest Ratio</option><option value="screener.ashx?v=152&ft=4&o=earningsdate">Earnings Date</option><option value="screener.ashx?v=152&ft=4&o=roa">Return on Assets</option><option value="screener.ashx?v=152&ft=4&o=roe">Return on Equity</option><option value="screener.ashx?v=152&ft=4&o=roi">Return on Investment</option><option value="screener.ashx?v=152&ft=4&o=curratio">Current Ratio</option><option value="screener.ashx?v=152&ft=4&o=quickratio">Quick Ratio</option><option value="screener.ashx?v=152&ft=4&o=ltdebteq">LT Debt/Equity</option><option value="screener.ashx?v=152&ft=4&o=debteq">Total Debt/Equity</option><option value="screener.ashx?v=152&ft=4&o=grossmargin">Gross Margin</option><option value="screener.ashx?v=152&ft=4&o=opermargin">Operating Margin</option><option value="screener.ashx?v=152&ft=4&o=netmargin">Net Profit Margin</option><option value="screener.ashx?v=152&ft=4&o=recom">Analyst Recommendation</option><option value="screener.ashx?v=152&ft=4&o=perf1w">Performance (Week)</option><option value="screener.ashx?v=152&ft=4&o=perf4w">Performance (Month)</option><option value="screener.ashx?v=152&ft=4&o=perf13w">Performance (Quarter)</option><option value="screener.ashx?v=152&ft=4&o=perf26w">Performance (Half Year)</option><option value="screener.ashx?v=152&ft=4&o=perf52w">Performance (Year)</option><option value="screener.ashx?v=152&ft=4&o=perfytd">Performance (Year To Date)</option><option value="screener.ashx?v=152&ft=4&o=beta">Beta</option><option value="screener.ashx?v=152&ft=4&o=averagetruerange">Average True Range</option><option value="screener.ashx?v=152&ft=4&o=volatility1w">Volatility (Week)</option><option value="screener.ashx?v=152&ft=4&o=volatility4w">Volatility (Month)</option><option value="screener.ashx?v=152&ft=4&o=sma20">20-Day SMA (Relative)</option><option value="screener.ashx?v=152&ft=4&o=sma50">50-Day SMA (Relative)</option><option value="screener.ashx?v=152&ft=4&o=sma200">200-Day SMA (Relative)</option><option value="screener.ashx?v=152&ft=4&o=high50d">50-Day High (Relative)</option><option value="screener.ashx?v=152&ft=4&o=low50d">50-Day Low (Relative)</option><option value="screener.ashx?v=152&ft=4&o=high52w">52-Week High (Relative)</option><option value="screener.ashx?v=152&ft=4&o=low52w">52-Week Low (Relative)</option><option value="screener.ashx?v=152&ft=4&o=rsi">Relative Strength Index (14)</option><option value="screener.ashx?v=152&ft=4&o=averagevolume">Average Volume (3 Month)</option><option value="screener.ashx?v=152&ft=4&o=relativevolume">Relative Volume</option><option value="screener.ashx?v=152&ft=4&o=change">Change</option><option value="screener.ashx?v=152&ft=4&o=changeopen">Change from Open</option><option value="screener.ashx?v=152&ft=4&o=gap">Gap</option><option value="screener.ashx?v=152&ft=4&o=volume">Volume</option><option value="screener.ashx?v=152&ft=4&o=price">Price</option><option value="screener.ashx?v=152&ft=4&o=targetprice">Target Price</option><option value="screener.ashx?v=152&ft=4&o=ipodate">IPO Date</option></select>
+</td>
+<td align="left" width="6%">
+<select id="orderDirSelect" style="width: 100%;" class="body-combo-text" onchange='window.location=document.getElementById("orderDirSelect").value'>
+<option selected="selected" value="screener.ashx?v=152&ft=4">Asc</option><option value="screener.ashx?v=152&ft=4&o=-">Desc</option></select>
+</td>
+<td align="center" width="6%">
+<span class="body-combo-title" style="cursor:pointer;" data-boxover="cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Signal] body=[<table width=300><tr><td class='tooltip_tab'>You can screen the stocks by signal - an event, by which traders usually enter or exit positions.</td></tr></table>] delay=[500]">Signal:</span></td>
+<td align="left" width="15%">
+<select id="signalSelect" style="width: 100%;"  class="body-combo-text" onchange='window.location=document.getElementById("signalSelect").value'>
+<option selected="selected" value="screener.ashx?v=152&ft=4">None (all stocks)</option><option value="screener.ashx?v=152&s=ta_topgainers&ft=4">Top Gainers</option><option value="screener.ashx?v=152&s=ta_toplosers&ft=4">Top Losers</option><option value="screener.ashx?v=152&s=ta_newhigh&ft=4">New High</option><option value="screener.ashx?v=152&s=ta_newlow&ft=4">New Low</option><option value="screener.ashx?v=152&s=ta_mostvolatile&ft=4">Most Volatile</option><option value="screener.ashx?v=152&s=ta_mostactive&ft=4">Most Active</option><option value="screener.ashx?v=152&s=ta_unusualvolume&ft=4">Unusual Volume</option><option value="screener.ashx?v=152&s=ta_overbought&ft=4">Overbought</option><option value="screener.ashx?v=152&s=ta_oversold&ft=4">Oversold</option><option value="screener.ashx?v=152&s=n_downgrades&ft=4">Downgrades</option><option value="screener.ashx?v=152&s=n_upgrades&ft=4">Upgrades</option><option value="screener.ashx?v=152&s=n_earningsbefore&ft=4">Earnings Before</option><option value="screener.ashx?v=152&s=n_earningsafter&ft=4">Earnings After</option><option value="screener.ashx?v=152&s=it_latestbuys&ft=4">Recent Insider Buying</option><option value="screener.ashx?v=152&s=it_latestsales&ft=4">Recent Insider Selling</option><option value="screener.ashx?v=152&s=n_majornews&ft=4">Major News</option><option value="screener.ashx?v=152&s=ta_p_horizontal&ft=4">Horizontal S/R</option><option value="screener.ashx?v=152&s=ta_p_tlresistance&ft=4">TL Resistance</option><option value="screener.ashx?v=152&s=ta_p_tlsupport&ft=4">TL Support</option><option value="screener.ashx?v=152&s=ta_p_wedgeup&ft=4">Wedge Up</option><option value="screener.ashx?v=152&s=ta_p_wedgedown&ft=4">Wedge Down</option><option value="screener.ashx?v=152&s=ta_p_wedgeresistance&ft=4">Triangle Ascending</option><option value="screener.ashx?v=152&s=ta_p_wedgesupport&ft=4">Triangle Descending</option><option value="screener.ashx?v=152&s=ta_p_wedge&ft=4">Wedge</option><option value="screener.ashx?v=152&s=ta_p_channelup&ft=4">Channel Up</option><option value="screener.ashx?v=152&s=ta_p_channeldown&ft=4">Channel Down</option><option value="screener.ashx?v=152&s=ta_p_channel&ft=4">Channel</option><option value="screener.ashx?v=152&s=ta_p_doubletop&ft=4">Double Top</option><option value="screener.ashx?v=152&s=ta_p_doublebottom&ft=4">Double Bottom</option><option value="screener.ashx?v=152&s=ta_p_multipletop&ft=4">Multiple Top</option><option value="screener.ashx?v=152&s=ta_p_multiplebottom&ft=4">Multiple Bottom</option><option value="screener.ashx?v=152&s=ta_p_headandshoulders&ft=4">Head & Shoulders</option><option value="screener.ashx?v=152&s=ta_p_headandshouldersinv&ft=4">Head & Shoulders Inverse</option></select>
+</td>
+<td align="center" width="6%">
+<span class="body-combo-title" style="cursor:pointer;" data-boxover="cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Tickers] body=[<table width=300><tr><td class='tooltip_tab'>To screen through a selected set of stocks, you can enter one or more tickers directly, such as 'MSFT,GOOG,AAPL'. The screening process will run only on the specified stocks. No input ticker(s) equals all stocks. The <b>open in screener</b> option in the <b>Search</b>, will copy the listed tickers to the screener's ticker box automatically.</td></tr></table>] offsetx=[-100] delay=[500]">Tickers:</span></td>
+<td align="left" width="22%">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
+<tr>
+<td align="left" width="100%">
+<input id="tickersInput" class="body-combo-text" style="width:100%" value="" type="text" onkeypress="if(event.keyCode==13){window.location='screener.ashx?v=152&ft=4&t=' + window.FLibs.getSanitizedTicker(document.getElementById('tickersInput').value, true)}">
+</td>
+</tr>
+</table>
+</td>
+<td>
+<input type="button" value=">" data-boxover="Submit tickers" class="screener-combo-button" style="cursor:pointer" onclick="window.location='screener.ashx?v=152&ft=4&t=' +tickersInput.value"/></td>
+<td align="left"><img src="gfx/nic2x2.gif" style="width:2px;height:22px" alt="" border="0"></td>
+<td align="left" valign="top"><a href="screener.ashx?v=151&ft=4&r=41" class="screener-filter" data-boxover="cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Filters] body=[<table width=300><tr><td class='tooltip_tab'>To optimize the screening by various stock-related criteria, you can use one or more <b>Filters</b>.</td></tr></table>] offsetx=[-305] delay=[500]">Filters <i class="arrow-up"></i></a></td>
+<td align="left"><img src="gfx/nic2x2.gif" style="width:2px;height:22px" alt="" border="0"></td>
+<td align="left" valign="top">
+<a href="screener.ashx?v=150&ft=4&r=41" class="screener-filter_inv" data-boxover="cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[View Settings] body=[<table width=300><tr><td class='tooltip_tab'>Here you can define your <b>Table - Custom</b> view, which is suitable for export for instance.</td></tr></table>] offsetx=[-305] delay=[500]">Settings <i class="arrow-up"></i></a></td>
+</tr>
+<tr><td colspan="30"><img src="gfx/nic2x2.gif" style="display:block;width:6px;height:6px" alt="" border="0"></td></tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="30" valign="middle" align="center" class="filters-border">
+<table width="100%" cellpadding="1" cellspacing="1">
+<tr>
+<td width="10%" align="right" class="filters-cells-h"><span class="screener-combo-title">No.</span><input type="checkbox" checked="checked" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=1,2,3,4,5,6,7,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells-h"><span class="screener-combo-title">Ticker</span><input type="checkbox" checked="checked" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,2,3,4,5,6,7,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells-h"><span class="screener-combo-title">Company</span><input type="checkbox" checked="checked" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,3,4,5,6,7,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells-h"><span class="screener-combo-title">Sector</span><input type="checkbox" checked="checked" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,4,5,6,7,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells-h"><span class="screener-combo-title">Industry</span><input type="checkbox" checked="checked" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,5,6,7,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells-h"><span class="screener-combo-title">Country</span><input type="checkbox" checked="checked" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,6,7,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells-h"><span class="screener-combo-title">Market Cap.</span><input type="checkbox" checked="checked" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,7,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells-h"><span class="screener-combo-title">P/E</span><input type="checkbox" checked="checked" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Forward P/E</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,8,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">PEG</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,9,65,66,67'"></td>
+</tr><tr>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">P/S</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,10,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">P/B</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,11,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">P/Cash</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,12,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">P/Free Cash Flow</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,13,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Dividend Yield</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,14,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Payout Ratio</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,15,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">EPS</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,16,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">EPS growth this year</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,17,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">EPS growth next year</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,18,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">EPS growth past 5 years</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,19,65,66,67'"></td>
+</tr><tr>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">EPS growth next 5 years</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,20,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Sales growth past 5 years</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,21,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">EPS growth qtr over qtr</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,22,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Sales growth qtr over qtr</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,23,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Shares Outstanding</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,24,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Shares Float</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,25,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Insider Ownership</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,26,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Insider Transactions</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,27,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Institutional Ownership</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,28,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Institutional Transactions</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,29,65,66,67'"></td>
+</tr><tr>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Float Short</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,30,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Short Ratio</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,31,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Return on Assets</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,32,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Return on Equity</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,33,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Return on Investments</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,34,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Current Ratio</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,35,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Quick Ratio</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,36,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Long Term Debt/Equity</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,37,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Total Debt/Equity</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,38,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Gross Margin</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,39,65,66,67'"></td>
+</tr><tr>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Operating Margin</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,40,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Net Profit Margin</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,41,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Performance (Week)</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,42,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Performance (Month)</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,43,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Performance (Quarter)</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,44,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Performance (Half Year)</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,45,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Performance (Year)</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,46,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Performance (YearToDate)</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,47,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Beta</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,48,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Average True Range</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,49,65,66,67'"></td>
+</tr><tr>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Volatility (Week)</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,50,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Volatility (Month)</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,51,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">20-Day Simple Moving Average</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,52,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">50-Day Simple Moving Average</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,53,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">200-Day Simple Moving Average</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,54,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">50-Day High</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,55,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">50-Day Low</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,56,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">52-Week High</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,57,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">52-Week Low</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,58,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">RSI</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,59,65,66,67'"></td>
+</tr><tr>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Change from Open</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,60,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Gap</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,61,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Analyst Recom.</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,62,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Average Volume</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,63,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Relative Volume</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,64,65,66,67'"></td>
+<td width="10%" align="right" class="filters-cells-h"><span class="screener-combo-title">Price</span><input type="checkbox" checked="checked" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,66,67'"></td>
+<td width="10%" align="right" class="filters-cells-h"><span class="screener-combo-title">Change</span><input type="checkbox" checked="checked" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,65,67'"></td>
+<td width="10%" align="right" class="filters-cells-h"><span class="screener-combo-title">Volume</span><input type="checkbox" checked="checked" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,65,66'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Earnings Date</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,65,66,67,68'"></td>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">Target Price</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,65,66,67,69'"></td>
+</tr><tr>
+<td width="10%" align="right" class="filters-cells"><span class="screener-combo-title">IPO Date</span><input type="checkbox" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,65,66,67,70'"></td>
+<td width="10%" align="right" class="filters-cells"></td>
+<td width="10%" align="right" class="filters-cells"></td>
+<td width="10%" align="right" class="filters-cells"></td>
+<td width="10%" align="right" class="filters-cells"></td>
+<td width="10%" align="right" class="filters-cells"></td>
+<td width="10%" align="right" class="filters-cells"></td>
+<td width="10%" align="right" class="filters-cells"></td>
+<td width="10%" align="center" class="filters-cells">&nbsp;<input type="button" value="Select all" class="screener-combo-button" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72'"/></td>
+<td width="10%" align="center" class="filters-cells">&nbsp;<input type="button" value="Defaults" class="screener-combo-button" onclick="window.location='screener.ashx?v=152&ft=4&r=41&c=0,1,2,3,4,5,6,7,65,66,67'"/></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr><td>
+<div id="screener-content">
+<table id="screener-views-table" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td width="100%">
+<table width="100%" cellpadding="3" cellspacing="0" class="screener-view-table">
+<tr>
+<td width="6.6%" align="center" class="screener-view" style="cursor:pointer;"><a href="screener.ashx?v=112&ft=4&r=41">Overview</a></td>
+<td width="6.6%" align="center" class="screener-view" style="cursor:pointer;"><a href="screener.ashx?v=122&ft=4&r=41">Valuation</a></td>
+<td width="6.6%" align="center" class="screener-view" style="cursor:pointer;"><a href="screener.ashx?v=162&ft=4&r=41">Financial</a></td>
+<td width="6.6%" align="center" class="screener-view" style="cursor:pointer;"><a href="screener.ashx?v=132&ft=4&r=41">Ownership</a></td>
+<td width="6.6%" align="center" class="screener-view" style="cursor:pointer;"><a href="screener.ashx?v=142&ft=4&r=41">Performance</a></td>
+<td width="6.6%" align="center" class="screener-view" style="cursor:pointer;"><a href="screener.ashx?v=172&ft=4&r=41">Technical</a></td>
+<td width="6.6%" align="center" class="screener-view screener-view-a" style="cursor:pointer;"><a href="screener.ashx?v=152&ft=4&r=41">Custom</a></td>
+<td width="6.6%" align="center" class="screener-view" style="cursor:pointer;"><a href="screener.ashx?v=212&ft=4&r=41">Charts</a></td>
+<td width="6.6%" align="center" class="screener-view" style="cursor:pointer;"><a href="screener.ashx?v=412&ft=4&r=41">Tickers</a></td>
+<td width="6.6%" align="center" class="screener-view" style="cursor:pointer;"><a href="screener.ashx?v=312&ft=4&r=41">Basic</a></td>
+<td width="6.6%" align="center" class="screener-view" style="cursor:pointer;"><a href="screener.ashx?v=352&ft=4&r=41">TA</a></td>
+<td width="6.6%" align="center" class="screener-view" style="cursor:pointer;"><a href="screener.ashx?v=322&ft=4&r=41">News</a></td>
+<td width="6.6%" align="center" class="screener-view" style="cursor:pointer;"><a href="screener.ashx?v=342&ft=4&r=41">Snapshot</a></td>
+<td width="6.6%" align="center" class="screener-view" style="cursor:pointer;"><a href="screener.ashx?v=712&ft=4&r=41"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="9" class="inline-block mr-1 -mt-0.5">
+            <rect class="fill-emerald-500" width="18" height="9" rx="1" ry="1" />
+            <path class="fill-white" d="M2 7V2h1v1h1v1h1V2h1v5H5V6H4V4H3v3H2ZM10 2H7v5h3V6H8V5h1V4H8V3h2V2ZM11 2h1v4h1V4h1v2h1V2h1v4h-1v1h-1V6h-1v1h-1V6h-1V2Z" />
+          </svg>Maps
+        </a></td>
+<td width="6.6%" align="center" class="screener-view" style="cursor:pointer;"><a href="/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=screener-menu-stats">Stats</a></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr><td width="100%"><img src="gfx/nic2x2.gif" style="display:block;width:2px;height:4px" alt="" border="0"></td></tr>
+<tr>
+<td width="100%">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td width="140" align="left" valign="bottom" class="count-text"><b>Total: </b>8508 #41</td>
+<td align="center" valign="bottom" class="fullview-links">
+<a href="javascript:SavePortfolio(8508,'v=152&ft=4&r=41')" class="tab-link">save as portfolio</a> | 
+<a href="/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=screener-create-alert" class="tab-link">create alert</a>&nbsp;<img src="/gfx/nic2x2.gif" style="width:20px;height:2px" border="0">
+<span class="count-text"><b>Auto Refresh:</b></span> <a href="/screener.ashx?v=152&ft=4&r=41&ar=180" class="tab-link ">3min</a> | <a href="/screener.ashx?v=152&ft=4&r=41" class="tab-link active">off</a></td><td width="18" align="center"><a href="screener.ashx?v=152&ft=4&r=21" class="screener_arrow is-prev"></a></td>
+<td width="10" align="right" valign="middle" class="count-text">
+<select id="pageSelect"  class="pages-combo" onchange='url="screener.ashx?v=152&ft=4&r=123456";row="r=" + document.getElementById("pageSelect").value;url=url.replace(/r=123456/,row);window.location=url;'>
+<option value=1>Page 1/426</option><option value=21>Page 2/426</option><option selected="selected" value=41>Page 3/426</option><option value=61>Page 4/426</option><option value=81>Page 5/426</option><option value=101>Page 6/426</option><option value=121>Page 7/426</option><option value=141>Page 8/426</option><option value=161>Page 9/426</option><option value=181>Page 10/426</option><option value=201>Page 11/426</option><option value=221>Page 12/426</option><option value=241>Page 13/426</option><option value=261>Page 14/426</option><option value=281>Page 15/426</option><option value=301>Page 16/426</option><option value=321>Page 17/426</option><option value=341>Page 18/426</option><option value=361>Page 19/426</option><option value=381>Page 20/426</option><option value=401>Page 21/426</option><option value=421>Page 22/426</option><option value=441>Page 23/426</option><option value=461>Page 24/426</option><option value=481>Page 25/426</option><option value=501>Page 26/426</option><option value=521>Page 27/426</option><option value=541>Page 28/426</option><option value=561>Page 29/426</option><option value=581>Page 30/426</option><option value=601>Page 31/426</option><option value=621>Page 32/426</option><option value=641>Page 33/426</option><option value=661>Page 34/426</option><option value=681>Page 35/426</option><option value=701>Page 36/426</option><option value=721>Page 37/426</option><option value=741>Page 38/426</option><option value=761>Page 39/426</option><option value=781>Page 40/426</option><option value=801>Page 41/426</option><option value=821>Page 42/426</option><option value=841>Page 43/426</option><option value=861>Page 44/426</option><option value=881>Page 45/426</option><option value=901>Page 46/426</option><option value=921>Page 47/426</option><option value=941>Page 48/426</option><option value=961>Page 49/426</option><option value=981>Page 50/426</option><option value=1001>Page 51/426</option><option value=1021>Page 52/426</option><option value=1041>Page 53/426</option><option value=1061>Page 54/426</option><option value=1081>Page 55/426</option><option value=1101>Page 56/426</option><option value=1121>Page 57/426</option><option value=1141>Page 58/426</option><option value=1161>Page 59/426</option><option value=1181>Page 60/426</option><option value=1201>Page 61/426</option><option value=1221>Page 62/426</option><option value=1241>Page 63/426</option><option value=1261>Page 64/426</option><option value=1281>Page 65/426</option><option value=1301>Page 66/426</option><option value=1321>Page 67/426</option><option value=1341>Page 68/426</option><option value=1361>Page 69/426</option><option value=1381>Page 70/426</option><option value=1401>Page 71/426</option><option value=1421>Page 72/426</option><option value=1441>Page 73/426</option><option value=1461>Page 74/426</option><option value=1481>Page 75/426</option><option value=1501>Page 76/426</option><option value=1521>Page 77/426</option><option value=1541>Page 78/426</option><option value=1561>Page 79/426</option><option value=1581>Page 80/426</option><option value=1601>Page 81/426</option><option value=1621>Page 82/426</option><option value=1641>Page 83/426</option><option value=1661>Page 84/426</option><option value=1681>Page 85/426</option><option value=1701>Page 86/426</option><option value=1721>Page 87/426</option><option value=1741>Page 88/426</option><option value=1761>Page 89/426</option><option value=1781>Page 90/426</option><option value=1801>Page 91/426</option><option value=1821>Page 92/426</option><option value=1841>Page 93/426</option><option value=1861>Page 94/426</option><option value=1881>Page 95/426</option><option value=1901>Page 96/426</option><option value=1921>Page 97/426</option><option value=1941>Page 98/426</option><option value=1961>Page 99/426</option><option value=1981>Page 100/426</option><option value=2001>Page 101/426</option><option value=2021>Page 102/426</option><option value=2041>Page 103/426</option><option value=2061>Page 104/426</option><option value=2081>Page 105/426</option><option value=2101>Page 106/426</option><option value=2121>Page 107/426</option><option value=2141>Page 108/426</option><option value=2161>Page 109/426</option><option value=2181>Page 110/426</option><option value=2201>Page 111/426</option><option value=2221>Page 112/426</option><option value=2241>Page 113/426</option><option value=2261>Page 114/426</option><option value=2281>Page 115/426</option><option value=2301>Page 116/426</option><option value=2321>Page 117/426</option><option value=2341>Page 118/426</option><option value=2361>Page 119/426</option><option value=2381>Page 120/426</option><option value=2401>Page 121/426</option><option value=2421>Page 122/426</option><option value=2441>Page 123/426</option><option value=2461>Page 124/426</option><option value=2481>Page 125/426</option><option value=2501>Page 126/426</option><option value=2521>Page 127/426</option><option value=2541>Page 128/426</option><option value=2561>Page 129/426</option><option value=2581>Page 130/426</option><option value=2601>Page 131/426</option><option value=2621>Page 132/426</option><option value=2641>Page 133/426</option><option value=2661>Page 134/426</option><option value=2681>Page 135/426</option><option value=2701>Page 136/426</option><option value=2721>Page 137/426</option><option value=2741>Page 138/426</option><option value=2761>Page 139/426</option><option value=2781>Page 140/426</option><option value=2801>Page 141/426</option><option value=2821>Page 142/426</option><option value=2841>Page 143/426</option><option value=2861>Page 144/426</option><option value=2881>Page 145/426</option><option value=2901>Page 146/426</option><option value=2921>Page 147/426</option><option value=2941>Page 148/426</option><option value=2961>Page 149/426</option><option value=2981>Page 150/426</option><option value=3001>Page 151/426</option><option value=3021>Page 152/426</option><option value=3041>Page 153/426</option><option value=3061>Page 154/426</option><option value=3081>Page 155/426</option><option value=3101>Page 156/426</option><option value=3121>Page 157/426</option><option value=3141>Page 158/426</option><option value=3161>Page 159/426</option><option value=3181>Page 160/426</option><option value=3201>Page 161/426</option><option value=3221>Page 162/426</option><option value=3241>Page 163/426</option><option value=3261>Page 164/426</option><option value=3281>Page 165/426</option><option value=3301>Page 166/426</option><option value=3321>Page 167/426</option><option value=3341>Page 168/426</option><option value=3361>Page 169/426</option><option value=3381>Page 170/426</option><option value=3401>Page 171/426</option><option value=3421>Page 172/426</option><option value=3441>Page 173/426</option><option value=3461>Page 174/426</option><option value=3481>Page 175/426</option><option value=3501>Page 176/426</option><option value=3521>Page 177/426</option><option value=3541>Page 178/426</option><option value=3561>Page 179/426</option><option value=3581>Page 180/426</option><option value=3601>Page 181/426</option><option value=3621>Page 182/426</option><option value=3641>Page 183/426</option><option value=3661>Page 184/426</option><option value=3681>Page 185/426</option><option value=3701>Page 186/426</option><option value=3721>Page 187/426</option><option value=3741>Page 188/426</option><option value=3761>Page 189/426</option><option value=3781>Page 190/426</option><option value=3801>Page 191/426</option><option value=3821>Page 192/426</option><option value=3841>Page 193/426</option><option value=3861>Page 194/426</option><option value=3881>Page 195/426</option><option value=3901>Page 196/426</option><option value=3921>Page 197/426</option><option value=3941>Page 198/426</option><option value=3961>Page 199/426</option><option value=3981>Page 200/426</option><option value=4001>Page 201/426</option><option value=4021>Page 202/426</option><option value=4041>Page 203/426</option><option value=4061>Page 204/426</option><option value=4081>Page 205/426</option><option value=4101>Page 206/426</option><option value=4121>Page 207/426</option><option value=4141>Page 208/426</option><option value=4161>Page 209/426</option><option value=4181>Page 210/426</option><option value=4201>Page 211/426</option><option value=4221>Page 212/426</option><option value=4241>Page 213/426</option><option value=4261>Page 214/426</option><option value=4281>Page 215/426</option><option value=4301>Page 216/426</option><option value=4321>Page 217/426</option><option value=4341>Page 218/426</option><option value=4361>Page 219/426</option><option value=4381>Page 220/426</option><option value=4401>Page 221/426</option><option value=4421>Page 222/426</option><option value=4441>Page 223/426</option><option value=4461>Page 224/426</option><option value=4481>Page 225/426</option><option value=4501>Page 226/426</option><option value=4521>Page 227/426</option><option value=4541>Page 228/426</option><option value=4561>Page 229/426</option><option value=4581>Page 230/426</option><option value=4601>Page 231/426</option><option value=4621>Page 232/426</option><option value=4641>Page 233/426</option><option value=4661>Page 234/426</option><option value=4681>Page 235/426</option><option value=4701>Page 236/426</option><option value=4721>Page 237/426</option><option value=4741>Page 238/426</option><option value=4761>Page 239/426</option><option value=4781>Page 240/426</option><option value=4801>Page 241/426</option><option value=4821>Page 242/426</option><option value=4841>Page 243/426</option><option value=4861>Page 244/426</option><option value=4881>Page 245/426</option><option value=4901>Page 246/426</option><option value=4921>Page 247/426</option><option value=4941>Page 248/426</option><option value=4961>Page 249/426</option><option value=4981>Page 250/426</option><option value=5001>Page 251/426</option><option value=5021>Page 252/426</option><option value=5041>Page 253/426</option><option value=5061>Page 254/426</option><option value=5081>Page 255/426</option><option value=5101>Page 256/426</option><option value=5121>Page 257/426</option><option value=5141>Page 258/426</option><option value=5161>Page 259/426</option><option value=5181>Page 260/426</option><option value=5201>Page 261/426</option><option value=5221>Page 262/426</option><option value=5241>Page 263/426</option><option value=5261>Page 264/426</option><option value=5281>Page 265/426</option><option value=5301>Page 266/426</option><option value=5321>Page 267/426</option><option value=5341>Page 268/426</option><option value=5361>Page 269/426</option><option value=5381>Page 270/426</option><option value=5401>Page 271/426</option><option value=5421>Page 272/426</option><option value=5441>Page 273/426</option><option value=5461>Page 274/426</option><option value=5481>Page 275/426</option><option value=5501>Page 276/426</option><option value=5521>Page 277/426</option><option value=5541>Page 278/426</option><option value=5561>Page 279/426</option><option value=5581>Page 280/426</option><option value=5601>Page 281/426</option><option value=5621>Page 282/426</option><option value=5641>Page 283/426</option><option value=5661>Page 284/426</option><option value=5681>Page 285/426</option><option value=5701>Page 286/426</option><option value=5721>Page 287/426</option><option value=5741>Page 288/426</option><option value=5761>Page 289/426</option><option value=5781>Page 290/426</option><option value=5801>Page 291/426</option><option value=5821>Page 292/426</option><option value=5841>Page 293/426</option><option value=5861>Page 294/426</option><option value=5881>Page 295/426</option><option value=5901>Page 296/426</option><option value=5921>Page 297/426</option><option value=5941>Page 298/426</option><option value=5961>Page 299/426</option><option value=5981>Page 300/426</option><option value=6001>Page 301/426</option><option value=6021>Page 302/426</option><option value=6041>Page 303/426</option><option value=6061>Page 304/426</option><option value=6081>Page 305/426</option><option value=6101>Page 306/426</option><option value=6121>Page 307/426</option><option value=6141>Page 308/426</option><option value=6161>Page 309/426</option><option value=6181>Page 310/426</option><option value=6201>Page 311/426</option><option value=6221>Page 312/426</option><option value=6241>Page 313/426</option><option value=6261>Page 314/426</option><option value=6281>Page 315/426</option><option value=6301>Page 316/426</option><option value=6321>Page 317/426</option><option value=6341>Page 318/426</option><option value=6361>Page 319/426</option><option value=6381>Page 320/426</option><option value=6401>Page 321/426</option><option value=6421>Page 322/426</option><option value=6441>Page 323/426</option><option value=6461>Page 324/426</option><option value=6481>Page 325/426</option><option value=6501>Page 326/426</option><option value=6521>Page 327/426</option><option value=6541>Page 328/426</option><option value=6561>Page 329/426</option><option value=6581>Page 330/426</option><option value=6601>Page 331/426</option><option value=6621>Page 332/426</option><option value=6641>Page 333/426</option><option value=6661>Page 334/426</option><option value=6681>Page 335/426</option><option value=6701>Page 336/426</option><option value=6721>Page 337/426</option><option value=6741>Page 338/426</option><option value=6761>Page 339/426</option><option value=6781>Page 340/426</option><option value=6801>Page 341/426</option><option value=6821>Page 342/426</option><option value=6841>Page 343/426</option><option value=6861>Page 344/426</option><option value=6881>Page 345/426</option><option value=6901>Page 346/426</option><option value=6921>Page 347/426</option><option value=6941>Page 348/426</option><option value=6961>Page 349/426</option><option value=6981>Page 350/426</option><option value=7001>Page 351/426</option><option value=7021>Page 352/426</option><option value=7041>Page 353/426</option><option value=7061>Page 354/426</option><option value=7081>Page 355/426</option><option value=7101>Page 356/426</option><option value=7121>Page 357/426</option><option value=7141>Page 358/426</option><option value=7161>Page 359/426</option><option value=7181>Page 360/426</option><option value=7201>Page 361/426</option><option value=7221>Page 362/426</option><option value=7241>Page 363/426</option><option value=7261>Page 364/426</option><option value=7281>Page 365/426</option><option value=7301>Page 366/426</option><option value=7321>Page 367/426</option><option value=7341>Page 368/426</option><option value=7361>Page 369/426</option><option value=7381>Page 370/426</option><option value=7401>Page 371/426</option><option value=7421>Page 372/426</option><option value=7441>Page 373/426</option><option value=7461>Page 374/426</option><option value=7481>Page 375/426</option><option value=7501>Page 376/426</option><option value=7521>Page 377/426</option><option value=7541>Page 378/426</option><option value=7561>Page 379/426</option><option value=7581>Page 380/426</option><option value=7601>Page 381/426</option><option value=7621>Page 382/426</option><option value=7641>Page 383/426</option><option value=7661>Page 384/426</option><option value=7681>Page 385/426</option><option value=7701>Page 386/426</option><option value=7721>Page 387/426</option><option value=7741>Page 388/426</option><option value=7761>Page 389/426</option><option value=7781>Page 390/426</option><option value=7801>Page 391/426</option><option value=7821>Page 392/426</option><option value=7841>Page 393/426</option><option value=7861>Page 394/426</option><option value=7881>Page 395/426</option><option value=7901>Page 396/426</option><option value=7921>Page 397/426</option><option value=7941>Page 398/426</option><option value=7961>Page 399/426</option><option value=7981>Page 400/426</option><option value=8001>Page 401/426</option><option value=8021>Page 402/426</option><option value=8041>Page 403/426</option><option value=8061>Page 404/426</option><option value=8081>Page 405/426</option><option value=8101>Page 406/426</option><option value=8121>Page 407/426</option><option value=8141>Page 408/426</option><option value=8161>Page 409/426</option><option value=8181>Page 410/426</option><option value=8201>Page 411/426</option><option value=8221>Page 412/426</option><option value=8241>Page 413/426</option><option value=8261>Page 414/426</option><option value=8281>Page 415/426</option><option value=8301>Page 416/426</option><option value=8321>Page 417/426</option><option value=8341>Page 418/426</option><option value=8361>Page 419/426</option><option value=8381>Page 420/426</option><option value=8401>Page 421/426</option><option value=8421>Page 422/426</option><option value=8441>Page 423/426</option><option value=8461>Page 424/426</option><option value=8481>Page 425/426</option><option value=8501>Page 426/426</option></select>
+</td>
+<td width="18" align="center"><a href="screener.ashx?v=152&ft=4&r=61" class="screener_arrow"></a></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<table class="table-light">
+<tr align="center" valign="middle">
+<td class="table-top cursor-pointer" onclick="window.location='screener.ashx?v=152&ft=4'">No.</td>
+<td class="table-top cursor-pointer is-selected" onclick="window.location='screener.ashx?v=152&ft=4&o=-ticker'"><img align="top" src="gfx/tab_arrow_u.gif" style="position:relative;top:-2px;width:14px;height:10px;" alt="" border="0">Ticker</td>
+<td class="table-top cursor-pointer" onclick="window.location='screener.ashx?v=152&ft=4&o=company'">Company</td>
+<td class="table-top cursor-pointer" onclick="window.location='screener.ashx?v=152&ft=4&o=sector'">Sector</td>
+<td class="table-top cursor-pointer" onclick="window.location='screener.ashx?v=152&ft=4&o=industry'">Industry</td>
+<td class="table-top cursor-pointer" onclick="window.location='screener.ashx?v=152&ft=4&o=country'">Country</td>
+<td class="table-top cursor-pointer" onclick="window.location='screener.ashx?v=152&ft=4&o=marketcap'">Market Cap</td>
+<td class="table-top cursor-pointer" onclick="window.location='screener.ashx?v=152&ft=4&o=pe'">P/E</td>
+<td class="table-top cursor-pointer" onclick="window.location='screener.ashx?v=152&ft=4&o=price'">Price</td>
+<td class="table-top cursor-pointer" onclick="window.location='screener.ashx?v=152&ft=4&o=change'">Change</td>
+<td class="table-top cursor-pointer" onclick="window.location='screener.ashx?v=152&ft=4&o=volume'">Volume</td>
+<tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABNB&ty=c&p=d&b=1" class="screener-link">41</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABNB&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Airbnb, Inc.</b>Travel Services | USA | 72.16B</div>] offsetx=[100] offsety=[0] delay=[0]"><a href="quote.ashx?t=ABNB&ty=c&p=d&b=1" class="screener-link-primary">ABNB</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABNB&ty=c&p=d&b=1" class="screener-link">Airbnb, Inc.</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABNB&ty=c&p=d&b=1" class="screener-link">Consumer Cyclical</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABNB&ty=c&p=d&b=1" class="screener-link">Travel Services</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABNB&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABNB&ty=c&p=d&b=1" class="screener-link">72.16B</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABNB&ty=c&p=d&b=1" class="screener-link"><span class="is-red">60.35</span></a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABNB&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Airbnb, Inc.</b>Travel Services | USA | 72.16B</div>] offsetx=[-324] offsety=[20] delay=[0]"><a href="quote.ashx?t=ABNB&ty=c&p=d&b=1" class="screener-link"><span class="is-red">107.32</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABNB&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-3.04%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABNB&ty=c&p=d&b=1" class="screener-link">1,120,810</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABOS&ty=c&p=d&b=1" class="screener-link">42</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABOS&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Acumen Pharmaceuticals, Inc.</b>Biotechnology | USA | 398.14M</div>] offsetx=[100] offsety=[0] delay=[0]"><a href="quote.ashx?t=ABOS&ty=c&p=d&b=1" class="screener-link-primary">ABOS</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABOS&ty=c&p=d&b=1" class="screener-link">Acumen Pharmaceuticals, Inc.</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABOS&ty=c&p=d&b=1" class="screener-link">Healthcare</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABOS&ty=c&p=d&b=1" class="screener-link">Biotechnology</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABOS&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABOS&ty=c&p=d&b=1" class="screener-link">398.14M</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABOS&ty=c&p=d&b=1" class="screener-link">-</a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABOS&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Acumen Pharmaceuticals, Inc.</b>Biotechnology | USA | 398.14M</div>] offsetx=[-324] offsety=[20] delay=[0]"><a href="quote.ashx?t=ABOS&ty=c&p=d&b=1" class="screener-link"><span class="is-red">9.01</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABOS&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-6.00%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABOS&ty=c&p=d&b=1" class="screener-link">3,088,852</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABR&ty=c&p=d&b=1" class="screener-link">43</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABR&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Arbor Realty Trust, Inc.</b>REIT - Mortgage | USA | 2.20B</div>] offsetx=[100] offsety=[0] delay=[0]"><a href="quote.ashx?t=ABR&ty=c&p=d&b=1" class="screener-link-primary">ABR</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABR&ty=c&p=d&b=1" class="screener-link">Arbor Realty Trust, Inc.</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABR&ty=c&p=d&b=1" class="screener-link">Real Estate</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABR&ty=c&p=d&b=1" class="screener-link">REIT - Mortgage</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABR&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABR&ty=c&p=d&b=1" class="screener-link">2.20B</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABR&ty=c&p=d&b=1" class="screener-link"><span class="is-green">6.90</span></a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABR&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Arbor Realty Trust, Inc.</b>REIT - Mortgage | USA | 2.20B</div>] offsetx=[-324] offsety=[20] delay=[0]"><a href="quote.ashx?t=ABR&ty=c&p=d&b=1" class="screener-link"><span class="is-red">11.58</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABR&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-6.61%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABR&ty=c&p=d&b=1" class="screener-link">1,209,100</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABSI&ty=c&p=d&b=1" class="screener-link">44</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABSI&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Absci Corporation</b>Biotechnology | USA | 317.22M</div>] offsetx=[100] offsety=[0] delay=[0]"><a href="quote.ashx?t=ABSI&ty=c&p=d&b=1" class="screener-link-primary">ABSI</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABSI&ty=c&p=d&b=1" class="screener-link">Absci Corporation</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABSI&ty=c&p=d&b=1" class="screener-link">Healthcare</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABSI&ty=c&p=d&b=1" class="screener-link">Biotechnology</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABSI&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABSI&ty=c&p=d&b=1" class="screener-link">317.22M</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABSI&ty=c&p=d&b=1" class="screener-link">-</a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABSI&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Absci Corporation</b>Biotechnology | USA | 317.22M</div>] offsetx=[-324] offsety=[20] delay=[0]"><a href="quote.ashx?t=ABSI&ty=c&p=d&b=1" class="screener-link"><span class="is-red">3.09</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABSI&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-5.50%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABSI&ty=c&p=d&b=1" class="screener-link">12,539</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABST&ty=c&p=d&b=1" class="screener-link">45</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABST&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Absolute Software Corporation</b>Software - Application | Canada | 818.83M</div>] offsetx=[100] offsety=[0] delay=[0]"><a href="quote.ashx?t=ABST&ty=c&p=d&b=1" class="screener-link-primary">ABST</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABST&ty=c&p=d&b=1" class="screener-link">Absolute Software Corporation</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABST&ty=c&p=d&b=1" class="screener-link">Technology</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABST&ty=c&p=d&b=1" class="screener-link">Software - Application</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABST&ty=c&p=d&b=1" class="screener-link">Canada</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABST&ty=c&p=d&b=1" class="screener-link">818.83M</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABST&ty=c&p=d&b=1" class="screener-link">-</a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABST&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Absolute Software Corporation</b>Software - Application | Canada | 818.83M</div>] offsetx=[-324] offsety=[20] delay=[0]"><a href="quote.ashx?t=ABST&ty=c&p=d&b=1" class="screener-link"><span class="is-red">11.37</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABST&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-1.90%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABST&ty=c&p=d&b=1" class="screener-link">22,376</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABT&ty=c&p=d&b=1" class="screener-link">46</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABT&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Abbott Laboratories</b>Medical Devices | USA | 173.55B</div>] offsetx=[100] offsety=[0] delay=[0]"><a href="quote.ashx?t=ABT&ty=c&p=d&b=1" class="screener-link-primary">ABT</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABT&ty=c&p=d&b=1" class="screener-link">Abbott Laboratories</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABT&ty=c&p=d&b=1" class="screener-link">Healthcare</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABT&ty=c&p=d&b=1" class="screener-link">Medical Devices</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABT&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABT&ty=c&p=d&b=1" class="screener-link">173.55B</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABT&ty=c&p=d&b=1" class="screener-link">20.52</a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABT&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Abbott Laboratories</b>Medical Devices | USA | 173.55B</div>] offsetx=[-324] offsety=[20] delay=[0]"><a href="quote.ashx?t=ABT&ty=c&p=d&b=1" class="screener-link"><span class="is-red">98.17</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABT&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-0.56%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABT&ty=c&p=d&b=1" class="screener-link">2,231,680</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABTX&ty=c&p=d&b=1" class="screener-link">47</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABTX&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Allegiance Bancshares, Inc.</b>Banks - Regional | USA | 868.95M</div>] offsetx=[100] offsety=[0] delay=[0]"><a href="quote.ashx?t=ABTX&ty=c&p=d&b=1" class="screener-link-primary">ABTX</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABTX&ty=c&p=d&b=1" class="screener-link">Allegiance Bancshares, Inc.</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABTX&ty=c&p=d&b=1" class="screener-link">Financial</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABTX&ty=c&p=d&b=1" class="screener-link">Banks - Regional</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABTX&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABTX&ty=c&p=d&b=1" class="screener-link">868.95M</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABTX&ty=c&p=d&b=1" class="screener-link"><span class="is-green">11.80</span></a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABTX&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Allegiance Bancshares, Inc.</b>Banks - Regional | USA | 868.95M</div>] offsetx=[-324] offsety=[20] delay=[0]"><a href="quote.ashx?t=ABTX&ty=c&p=d&b=1" class="screener-link"><span class="is-red">42.61</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABTX&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-2.52%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABTX&ty=c&p=d&b=1" class="screener-link">11,796</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABUS&ty=c&p=d&b=1" class="screener-link">48</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABUS&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Arbutus Biopharma Corporation</b>Biotechnology | USA | 312.26M</div>] offsetx=[100] offsety=[0] delay=[0]"><a href="quote.ashx?t=ABUS&ty=c&p=d&b=1" class="screener-link-primary">ABUS</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABUS&ty=c&p=d&b=1" class="screener-link">Arbutus Biopharma Corporation</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABUS&ty=c&p=d&b=1" class="screener-link">Healthcare</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABUS&ty=c&p=d&b=1" class="screener-link">Biotechnology</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABUS&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABUS&ty=c&p=d&b=1" class="screener-link">312.26M</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABUS&ty=c&p=d&b=1" class="screener-link">-</a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABUS&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Arbutus Biopharma Corporation</b>Biotechnology | USA | 312.26M</div>] offsetx=[-324] offsety=[20] delay=[0]"><a href="quote.ashx?t=ABUS&ty=c&p=d&b=1" class="screener-link"><span class="is-red">2.00</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABUS&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-2.21%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABUS&ty=c&p=d&b=1" class="screener-link">80,215</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABVC&ty=c&p=d&b=1" class="screener-link">49</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABVC&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>ABVC BioPharma, Inc.</b>Biotechnology | USA | 23.97M</div>] offsetx=[100] offsety=[0] delay=[0]"><a href="quote.ashx?t=ABVC&ty=c&p=d&b=1" class="screener-link-primary">ABVC</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABVC&ty=c&p=d&b=1" class="screener-link">ABVC BioPharma, Inc.</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABVC&ty=c&p=d&b=1" class="screener-link">Healthcare</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABVC&ty=c&p=d&b=1" class="screener-link">Biotechnology</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ABVC&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABVC&ty=c&p=d&b=1" class="screener-link">23.97M</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABVC&ty=c&p=d&b=1" class="screener-link">-</a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ABVC&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>ABVC BioPharma, Inc.</b>Biotechnology | USA | 23.97M</div>] offsetx=[-324] offsety=[20] delay=[0]"><a href="quote.ashx?t=ABVC&ty=c&p=d&b=1" class="screener-link"><span class="is-green">0.89</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABVC&ty=c&p=d&b=1" class="screener-link"><span class="is-green">6.99%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ABVC&ty=c&p=d&b=1" class="screener-link">1,087</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=AC&ty=c&p=d&b=1" class="screener-link">50</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=AC&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Associated Capital Group, Inc.</b>Capital Markets | USA | 811.39M</div>] offsetx=[100] offsety=[0] delay=[0]"><a href="quote.ashx?t=AC&ty=c&p=d&b=1" class="screener-link-primary">AC</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=AC&ty=c&p=d&b=1" class="screener-link">Associated Capital Group, Inc.</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=AC&ty=c&p=d&b=1" class="screener-link">Financial</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=AC&ty=c&p=d&b=1" class="screener-link">Capital Markets</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=AC&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=AC&ty=c&p=d&b=1" class="screener-link">811.39M</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=AC&ty=c&p=d&b=1" class="screener-link">-</a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=AC&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Associated Capital Group, Inc.</b>Capital Markets | USA | 811.39M</div>] offsetx=[-324] offsety=[20] delay=[0]"><a href="quote.ashx?t=AC&ty=c&p=d&b=1" class="screener-link"><span class="is-red">36.24</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=AC&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-0.71%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=AC&ty=c&p=d&b=1" class="screener-link">289</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACA&ty=c&p=d&b=1" class="screener-link">51</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACA&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Arcosa, Inc.</b>Infrastructure Operations | USA | 2.86B</div>] offsetx=[100] offsety=[-220] delay=[0]"><a href="quote.ashx?t=ACA&ty=c&p=d&b=1" class="screener-link-primary">ACA</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACA&ty=c&p=d&b=1" class="screener-link">Arcosa, Inc.</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACA&ty=c&p=d&b=1" class="screener-link">Industrials</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACA&ty=c&p=d&b=1" class="screener-link">Infrastructure Operations</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACA&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACA&ty=c&p=d&b=1" class="screener-link">2.86B</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACA&ty=c&p=d&b=1" class="screener-link">30.11</a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACA&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Arcosa, Inc.</b>Infrastructure Operations | USA | 2.86B</div>] offsetx=[-324] offsety=[-230] delay=[0]"><a href="quote.ashx?t=ACA&ty=c&p=d&b=1" class="screener-link"><span class="is-red">55.79</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACA&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-1.71%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACA&ty=c&p=d&b=1" class="screener-link">40,527</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACAD&ty=c&p=d&b=1" class="screener-link">52</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACAD&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>ACADIA Pharmaceuticals Inc.</b>Biotechnology | USA | 2.76B</div>] offsetx=[100] offsety=[-220] delay=[0]"><a href="quote.ashx?t=ACAD&ty=c&p=d&b=1" class="screener-link-primary">ACAD</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACAD&ty=c&p=d&b=1" class="screener-link">ACADIA Pharmaceuticals Inc.</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACAD&ty=c&p=d&b=1" class="screener-link">Healthcare</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACAD&ty=c&p=d&b=1" class="screener-link">Biotechnology</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACAD&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACAD&ty=c&p=d&b=1" class="screener-link">2.76B</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACAD&ty=c&p=d&b=1" class="screener-link">-</a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACAD&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>ACADIA Pharmaceuticals Inc.</b>Biotechnology | USA | 2.76B</div>] offsetx=[-324] offsety=[-230] delay=[0]"><a href="quote.ashx?t=ACAD&ty=c&p=d&b=1" class="screener-link"><span class="is-red">16.20</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACAD&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-3.48%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACAD&ty=c&p=d&b=1" class="screener-link">296,291</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACAQ&ty=c&p=d&b=1" class="screener-link">53</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACAQ&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Athena Consumer Acquisition Corp.</b>Shell Companies | USA | 323.03M</div>] offsetx=[100] offsety=[-220] delay=[0]"><a href="quote.ashx?t=ACAQ&ty=c&p=d&b=1" class="screener-link-primary">ACAQ</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACAQ&ty=c&p=d&b=1" class="screener-link">Athena Consumer Acquisition Corp.</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACAQ&ty=c&p=d&b=1" class="screener-link">Financial</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACAQ&ty=c&p=d&b=1" class="screener-link">Shell Companies</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACAQ&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACAQ&ty=c&p=d&b=1" class="screener-link">323.03M</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACAQ&ty=c&p=d&b=1" class="screener-link">-</a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACAQ&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Athena Consumer Acquisition Corp.</b>Shell Companies | USA | 323.03M</div>] offsetx=[-324] offsety=[-230] delay=[0]"><a href="quote.ashx?t=ACAQ&ty=c&p=d&b=1" class="screener-link">10.06</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACAQ&ty=c&p=d&b=1" class="screener-link">0.00%</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACAQ&ty=c&p=d&b=1" class="screener-link">0</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACB&ty=c&p=d&b=1" class="screener-link">54</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACB&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Aurora Cannabis Inc.</b>Drug Manufacturers - Specialty & Generic | Canada | 407.87M</div>] offsetx=[100] offsety=[-220] delay=[0]"><a href="quote.ashx?t=ACB&ty=c&p=d&b=1" class="screener-link-primary">ACB</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACB&ty=c&p=d&b=1" class="screener-link">Aurora Cannabis Inc.</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACB&ty=c&p=d&b=1" class="screener-link">Healthcare</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACB&ty=c&p=d&b=1" class="screener-link">Drug Manufacturers - Specialty & Generic</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACB&ty=c&p=d&b=1" class="screener-link">Canada</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACB&ty=c&p=d&b=1" class="screener-link">407.87M</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACB&ty=c&p=d&b=1" class="screener-link">-</a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACB&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Aurora Cannabis Inc.</b>Drug Manufacturers - Specialty & Generic | Canada | 407.87M</div>] offsetx=[-324] offsety=[-230] delay=[0]"><a href="quote.ashx?t=ACB&ty=c&p=d&b=1" class="screener-link"><span class="is-red">1.25</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACB&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-3.85%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACB&ty=c&p=d&b=1" class="screener-link">1,212,933</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACCD&ty=c&p=d&b=1" class="screener-link">55</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACCD&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Accolade, Inc.</b>Health Information Services | USA | 920.06M</div>] offsetx=[100] offsety=[-220] delay=[0]"><a href="quote.ashx?t=ACCD&ty=c&p=d&b=1" class="screener-link-primary">ACCD</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACCD&ty=c&p=d&b=1" class="screener-link">Accolade, Inc.</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACCD&ty=c&p=d&b=1" class="screener-link">Healthcare</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACCD&ty=c&p=d&b=1" class="screener-link">Health Information Services</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACCD&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACCD&ty=c&p=d&b=1" class="screener-link">920.06M</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACCD&ty=c&p=d&b=1" class="screener-link">-</a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACCD&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Accolade, Inc.</b>Health Information Services | USA | 920.06M</div>] offsetx=[-324] offsety=[-230] delay=[0]"><a href="quote.ashx?t=ACCD&ty=c&p=d&b=1" class="screener-link"><span class="is-red">11.94</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACCD&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-6.72%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACCD&ty=c&p=d&b=1" class="screener-link">85,719</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACCO&ty=c&p=d&b=1" class="screener-link">56</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACCO&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>ACCO Brands Corporation</b>Business Equipment & Supplies | USA | 498.64M</div>] offsetx=[100] offsety=[-220] delay=[0]"><a href="quote.ashx?t=ACCO&ty=c&p=d&b=1" class="screener-link-primary">ACCO</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACCO&ty=c&p=d&b=1" class="screener-link">ACCO Brands Corporation</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACCO&ty=c&p=d&b=1" class="screener-link">Industrials</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACCO&ty=c&p=d&b=1" class="screener-link">Business Equipment & Supplies</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACCO&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACCO&ty=c&p=d&b=1" class="screener-link">498.64M</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACCO&ty=c&p=d&b=1" class="screener-link"><span class="is-green">4.53</span></a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACCO&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>ACCO Brands Corporation</b>Business Equipment & Supplies | USA | 498.64M</div>] offsetx=[-324] offsety=[-230] delay=[0]"><a href="quote.ashx?t=ACCO&ty=c&p=d&b=1" class="screener-link"><span class="is-red">4.97</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACCO&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-3.22%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACCO&ty=c&p=d&b=1" class="screener-link">107,615</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACEL&ty=c&p=d&b=1" class="screener-link">57</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACEL&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Accel Entertainment, Inc.</b>Gambling | USA | 731.05M</div>] offsetx=[100] offsety=[-220] delay=[0]"><a href="quote.ashx?t=ACEL&ty=c&p=d&b=1" class="screener-link-primary">ACEL</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACEL&ty=c&p=d&b=1" class="screener-link">Accel Entertainment, Inc.</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACEL&ty=c&p=d&b=1" class="screener-link">Consumer Cyclical</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACEL&ty=c&p=d&b=1" class="screener-link">Gambling</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACEL&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACEL&ty=c&p=d&b=1" class="screener-link">731.05M</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACEL&ty=c&p=d&b=1" class="screener-link"><span class="is-green">13.37</span></a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACEL&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Accel Entertainment, Inc.</b>Gambling | USA | 731.05M</div>] offsetx=[-324] offsety=[-230] delay=[0]"><a href="quote.ashx?t=ACEL&ty=c&p=d&b=1" class="screener-link"><span class="is-red">7.68</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACEL&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-3.76%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACEL&ty=c&p=d&b=1" class="screener-link">35,872</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACER&ty=c&p=d&b=1" class="screener-link">58</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACER&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Acer Therapeutics Inc.</b>Biotechnology | USA | 24.93M</div>] offsetx=[100] offsety=[-220] delay=[0]"><a href="quote.ashx?t=ACER&ty=c&p=d&b=1" class="screener-link-primary">ACER</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACER&ty=c&p=d&b=1" class="screener-link">Acer Therapeutics Inc.</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACER&ty=c&p=d&b=1" class="screener-link">Healthcare</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACER&ty=c&p=d&b=1" class="screener-link">Biotechnology</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACER&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACER&ty=c&p=d&b=1" class="screener-link">24.93M</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACER&ty=c&p=d&b=1" class="screener-link">-</a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACER&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Acer Therapeutics Inc.</b>Biotechnology | USA | 24.93M</div>] offsetx=[-324] offsety=[-230] delay=[0]"><a href="quote.ashx?t=ACER&ty=c&p=d&b=1" class="screener-link"><span class="is-red">1.37</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACER&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-11.04%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACER&ty=c&p=d&b=1" class="screener-link">54,241</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACES&ty=c&p=d&b=1" class="screener-link">59</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACES&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>ALPS Clean Energy ETF</b>Exchange Traded Fund | USA | -</div>] offsetx=[100] offsety=[-220] delay=[0]"><a href="quote.ashx?t=ACES&ty=c&p=d&b=1" class="screener-link-primary">ACES</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACES&ty=c&p=d&b=1" class="screener-link">ALPS Clean Energy ETF</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACES&ty=c&p=d&b=1" class="screener-link">Financial</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACES&ty=c&p=d&b=1" class="screener-link">Exchange Traded Fund</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACES&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACES&ty=c&p=d&b=1" class="screener-link">-</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACES&ty=c&p=d&b=1" class="screener-link">-</a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACES&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>ALPS Clean Energy ETF</b>Exchange Traded Fund | USA | -</div>] offsetx=[-324] offsety=[-230] delay=[0]"><a href="quote.ashx?t=ACES&ty=c&p=d&b=1" class="screener-link"><span class="is-red">55.42</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACES&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-5.70%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACES&ty=c&p=d&b=1" class="screener-link">6,208</a></td></tr><tr valign="top">
+<td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACET&ty=c&p=d&b=1" class="screener-link">60</a></td><td height="10" align="left" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACET&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Adicet Bio, Inc.</b>Biotechnology | USA | 610.63M</div>] offsetx=[100] offsety=[-220] delay=[0]"><a href="quote.ashx?t=ACET&ty=c&p=d&b=1" class="screener-link-primary">ACET</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACET&ty=c&p=d&b=1" class="screener-link">Adicet Bio, Inc.</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACET&ty=c&p=d&b=1" class="screener-link">Healthcare</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACET&ty=c&p=d&b=1" class="screener-link">Biotechnology</a></td><td height="10" align="left" class="screener-body-table-nw"><a href="quote.ashx?t=ACET&ty=c&p=d&b=1" class="screener-link">USA</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACET&ty=c&p=d&b=1" class="screener-link">610.63M</a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACET&ty=c&p=d&b=1" class="screener-link">-</a></td><td height="10" align="right" class="screener-body-table-nw" data-boxover="cssbody=[hoverchart] cssheader=[tabchrthdr] body=[<img referrerPolicy='no-referrer-when-downgrade' src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=ACET&tf=d&ct=candle_stick'  width='324' height='180' /><div><b>Adicet Bio, Inc.</b>Biotechnology | USA | 610.63M</div>] offsetx=[-324] offsety=[-230] delay=[0]"><a href="quote.ashx?t=ACET&ty=c&p=d&b=1" class="screener-link"><span class="is-red">13.75</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACET&ty=c&p=d&b=1" class="screener-link"><span class="is-red">-5.63%</span></a></td><td height="10" align="right" class="screener-body-table-nw"><a href="quote.ashx?t=ACET&ty=c&p=d&b=1" class="screener-link">78,192</a></td></tr></table>
+</td>
+</tr>
+<tr>
+<td>
+<table width="100%" cellpadding="0" cellspacing="0" class="body-table" bgcolor="#ffffff" border="0">
+<tr>
+<td align="left" style="color:#888888"></td><td align="right" style="color:#1E6DC0"><a href="elite.ashx" class="tab-link">export</a></td></tr>
+</table>
+</td>
+</tr>
+<tr><td><img src="gfx/nic2x2.gif" style="display:block;width:2px;height:8px" alt="" border="0"></td></tr>
+<tr>
+<td width="100%" align="center" valign="top" class="body-table screener_pagination" bgcolor="#ffffff">
+<a href="screener.ashx?v=152&ft=4&r=21" class="tab-link"><b>prev</b></a><a href="screener.ashx?v=152&ft=4" class="screener-pages">1</a><a href="screener.ashx?v=152&ft=4&r=21" class="screener-pages">2</a><a href="screener.ashx?v=152&ft=4&r=41" class="tab-link" style="color: #000"><b>3</b></a><a href="screener.ashx?v=152&ft=4&r=61" class="screener-pages">4</a><a href="screener.ashx?v=152&ft=4&r=81" class="screener-pages">5</a><a href="screener.ashx?v=152&ft=4&r=101" class="screener-pages">6</a><a href="screener.ashx?v=152&ft=4&r=121" class="screener-pages">7</a><a href="screener.ashx?v=152&ft=4&r=141" class="screener-pages">8</a> ... <a href="screener.ashx?v=152&ft=4&r=981" class="screener-pages">50</a> ... <a href="screener.ashx?v=152&ft=4&r=1981" class="screener-pages">100</a> ... <a href="screener.ashx?v=152&ft=4&r=2981" class="screener-pages">150</a> ... <a href="screener.ashx?v=152&ft=4&r=3981" class="screener-pages">200</a> ... <a href="screener.ashx?v=152&ft=4&r=4981" class="screener-pages">250</a> ... <a href="screener.ashx?v=152&ft=4&r=5981" class="screener-pages">300</a> ... <a href="screener.ashx?v=152&ft=4&r=6981" class="screener-pages">350</a> ... <a href="screener.ashx?v=152&ft=4&r=7981" class="screener-pages">400</a> ... <a href="screener.ashx?v=152&ft=4&r=8501" class="screener-pages">426</a><a href="screener.ashx?v=152&ft=4&r=61" class="tab-link"><b>next</b></a>
+</td>
+</tr>
+<tr><td><img src="gfx/nic2x2.gif" style="width:2px;height:10px" alt="" border="0"></td></tr>
+</table>
+<div id="IC_D_3x3_1"class="relative overflow-hidden flex items-center justify-center w-full mx-auto" style="width:970px;height:250px;max-height:250px"></div></div>
+</td></tr><!-- TS
+ABNB|107.32|1120810
+ABOS|9.01|3088852
+ABR|11.58|1209100
+ABSI|3.09|12539
+ABST|11.37|22376
+ABT|98.17|2231680
+ABTX|42.61|11796
+ABUS|2.00|80215
+ABVC|0.89|1087
+AC|36.24|289
+ACA|55.79|40527
+ACAD|16.20|296291
+ACAQ|10.06|0
+ACB|1.25|1212933
+ACCD|11.94|85719
+ACCO|4.97|107615
+ACEL|7.68|35872
+ACER|1.37|54241
+ACES|55.42|6208
+ACET|13.75|78192
+TE -->
+
+            <script type="text/javascript">
+                ScreenerRefreshInit(0);
+            </script>
+        <tr><td>
+            <div class="footer" style="margin-top: 20px;padding-bottom: 115px">
+                <div class="footer_links">
+                    <a class="tab-link" href="/affiliate.ashx">affiliate</a>
+                    <span class="footer_dot"> • </span>
+                    <a class="tab-link" href="/advertise.ashx">advertise</a>
+                    <span class="footer_dot"> • </span>
+                    <a class="tab-link" href="/contact.ashx">contact</a>
+                    <span class="footer_dot"> • </span>
+                    <a class="tab-link" href="/privacy.ashx">privacy</a>
+                    <span class="footer_dot"> • </span>
+                    <a class="tab-link" href="/help/screener.ashx">help</a>
+                <br>
+                <a class="tab-link" href="javascript:void(0)" onclick="window.__uspapi && window.__uspapi('displayUspUi');">Do Not Sell My Data</a>
+                <span class="footer_dot"> • </span>
+                <a class="tab-link" href="javascript:void(0)" onClick="window.__tcfapi && window.__tcfapi('displayConsentUi', 2, function() {})">Privacy Settings</a>
+            
+                </div>
+                Quotes delayed 15 minutes for NASDAQ, and 20 minutes for NYSE and AMEX.
+                <br>
+                Copyright © 2007-2022 FINVIZ.com. All Rights Reserved.
+            </div></td></tr></table></div></div>
+            <script async src="https://www.googletagmanager.com/gtag/js?id=UA-3261808-1"></script>
+            <script>
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+
+              gtag('set', {'dimension1': 'NotLoggedIn'});
+              gtag('set', {'dimension3': window.devicePixelRatio || 'unknown'});
+
+              gtag('config', 'UA-3261808-1', { sample_rate: 10 });
+              gtag('config', 'G-ZT9VQEWD4N');
+              
+            </script>
+        <div id="IC_D_1x1_1"class="relative overflow-hidden flex items-center justify-center w-full mx-auto"></div><div id="modal-elite-ad" class="modal-elite-ad">
+                            <div id="modal-elite-ad_content" class="modal-elite-ad_content">
+			                    <button id="modal-elite-ad-close" type="button" class="modal-elite-ad_close">×</button>
+
+                                <!--<div id="modal-elite-ad-content-0" style="display: none">
+			                        <h2>Ever heard of Finviz*Elite?</h2>
+                                    <p>
+                                        Our premium service offers you real-time quotes, advanced visualizations, technical studies, and much more.<br>
+                                        Become Elite and make informed financial decisions.
+                                    </p>
+                                    <a href="/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=modal-0" id="modal-elite-ad-btn-0" class="" target="_blank">Find out more</a>
+                                </div>-->
+
+                                <div id="modal-elite-ad-content-1" style="display: block">
+			                        <h2>Upgrade your FINVIZ experience</h2>
+                                    <p>
+                                        Join thousands of traders who make more informed decisions with&nbsp;our&nbsp;premium features.
+                                        Real-time quotes, advanced&nbsp;visualizations, backtesting, and much more.
+                                    </p>
+                                    <a href="/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=modal-1" id="modal-elite-ad-btn-1" class="modal-elite_button" target="_blank">Learn more about FINVIZ*Elite</a>
+                                </div>
+                            </div>
+                         </div><script src="/script/pv.js?rev=317" async></script><script defer>window.renderScriptNotLoaded();</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"75259107edda0ab6","token":"e53f08f6c9e04bfd9760701085ec93b4","version":"2022.8.1","si":100}' crossorigin="anonymous"></script>
+</body>
+</html>
